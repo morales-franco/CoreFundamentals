@@ -26,7 +26,7 @@ namespace OdeToFood
              */
             //Registro service
             services.AddSingleton<IGreeter, Greeter>();
-            services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
+            services.AddSingleton<IRestaurantData, InMemoryRestaurantData>();
 
             services.AddMvc();
 
