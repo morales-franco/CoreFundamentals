@@ -1,1 +1,14 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using OdeToFood.Models
+@using OdeToFood.ViewModels
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@*En este archivo especificamos usings que queremos que sean comunes en todas las vistas por ejemplo
+sino especificamos en este archivo el using OdeToFood.Models entonces en todas las vistas deberia especificar
+model OdeToFood.Models.Restaurant
+Ahora con el using especificado en el ViewImports puedo solo poner:
+model Restaurant
+porque ya estan registrado los usings en el _ViewImports
+
+Aca tambien importamos los asp net core helpers
+
+Este es un archivo jerarquico podria existir uno en cada view Folder*@

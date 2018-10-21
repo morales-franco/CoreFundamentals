@@ -1,16 +1,21 @@
-﻿@using OdeToFood.Models
-@model Restaurant
-
+﻿@model RestaurantEditModel
+@{
+    ViewBag.Title = "Create";
+}
 <h1>Create</h1>
 
 <form method="post">
-
+    <label asp-for="Name"></label>
     <input asp-for="Name" />
+    <span asp-validation-for="Name"></span>
 
-    <select asp-for="Cuisine"
-            asp-items="@Html.GetEnumSelectList<CuisineType>()">
-    </select>
+    <div>
+        <label asp-for="Cuisine"></label>
 
+        <select asp-for="Cuisine"
+                asp-items="@Html.GetEnumSelectList<CuisineType>()"></select>
+        <span asp-validation-for="Cuisine"></span>
+    </div>
     <input type="submit" name="Save" value="Save" />
 
 </form>
