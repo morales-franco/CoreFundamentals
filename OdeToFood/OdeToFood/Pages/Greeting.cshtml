@@ -1,0 +1,9 @@
+﻿@page "{name}"
+@model OdeToFood.Pages.GreetingModel
+@{
+    ViewData["Title"] = "Greeting";
+}
+
+<h2>Greeting</h2>
+<div>@DateTime.Now.Year</div>
+<div>@Model.CurrentGreeting</div>

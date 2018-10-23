@@ -11,6 +11,14 @@
     </div>
     <footer>
         @RenderSection("footer", required: false)
+        @*
+        @await Component.InvokeAsync("Greeter")
+        <vc:greeter> reemplaza la linea anterior
+        Para que funcione te agregar un using del proyecto
+        en el _viewImport para que 
+        encuentre el componente
+        *@
+        <vc:greeter></vc:greeter>
     </footer>
 </body>
 </html>

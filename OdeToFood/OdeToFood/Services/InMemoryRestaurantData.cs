@@ -36,5 +36,10 @@ namespace OdeToFood.Services
         {
             return _restaurant.OrderBy(r => r.Name);
         }
+
+        public Restaurant Update(Restaurant restaurant)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
