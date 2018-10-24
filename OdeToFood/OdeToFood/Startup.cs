@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +31,29 @@ namespace OdeToFood
         //Register dependency injection
         public void ConfigureServices(IServiceCollection services)
         {
+            //Authentication Services
+            services.AddAuthentication(options =>
+            {
+                //Friendly name de como autenticamos a los usuarios. Tokens, cookies, etc
+                //En nuestro caso una vez que el provider acepte las credenciales nos devuelve un token que nosotros
+                //almacenamos en una cookie y es alli donde estaran las credenciales del usuario --> DefaultScheme: Cookies
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                //Obligamos al usuario a autenticarse con nuestro provider OpenIdConnect
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddOpenIdConnect( options => {
+
+                //Bind: Automaticamente hace un binding de las properties del bloque de AzureAd con las properties de
+                //options. En este caso setea las siguientes properties:
+                //options.Authority
+                //options.ClientId
+                _configuration.Bind("AzureAd", options);
+            })
+            .AddCookie();
+
+
+
             /*
              * Singleton: sola una instancia en toda la aplicación
              * Transient: Siempre que alguien necesite una instancia de un servicio, por ejemplo de IGreeter, genera una nueva
@@ -77,12 +103,27 @@ namespace OdeToFood
                 app.UseDeveloperExceptionPage();
             }
 
+            /*
+             * Examina URL entrantes y podemos configurarles reglas como conditionals o regular expressions que si matchean o  no con el incoming request 
+             * podemos por ejemplo redirigirlos a cierto lado
+             * Me aseguro que todas los request entrantes sean HTTPS
+             * Cada vez que un cliente se quiera conectar a nuestra app si se conecta con una url HTTP se lo redigira a la misma pagina de la app
+             * pero con HTTPS
+             */
+            app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
+
             //Muestra welcome page
             //app.UseWelcomePage();
 
             //app.UseDefaultFiles();
             //Permite acceder a archivos statics que estan en www.root si la coincidencia de nombre es exacta
             app.UseStaticFiles();
+
+
+            //despues de staticFiles pero antes de useMvc
+            //Una vez que especificamos que va ausar Authentication tenemos que setearles los servicios en ConfigureServices
+            app.UseAuthentication();
+
 
             app.UseMvc(ConfigureRoutes);
 
