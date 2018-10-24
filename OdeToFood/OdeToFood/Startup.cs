@@ -120,6 +120,11 @@ namespace OdeToFood
             app.UseStaticFiles();
 
 
+            //Por default los archivos staticos vienen de la carpeta www.root entonces tengo que configurar el middleware
+            //para que permita al servidor servir contenido estatico desde la carpeta node_modules
+
+            app.UseNodeModules(env.ContentRootPath);
+
             //despues de staticFiles pero antes de useMvc
             //Una vez que especificamos que va ausar Authentication tenemos que setearles los servicios en ConfigureServices
             app.UseAuthentication();
@@ -127,12 +132,12 @@ namespace OdeToFood
 
             app.UseMvc(ConfigureRoutes);
 
-            app.Run(async (context) =>
-            {
-                //Code for every request recibido
-                var greeting = greeter.GetMessageOfTheDay();
-                await context.Response.WriteAsync($"{ greeting } : { env.EnvironmentName }" );
-            });
+            //app.Run(async (context) =>
+            //{
+            //    //Code for every request recibido
+            //    var greeting = greeter.GetMessageOfTheDay();
+            //    await context.Response.WriteAsync($"{ greeting } : { env.EnvironmentName }" );
+            //});
         }
 
         private void ConfigureRoutes(IRouteBuilder routeBuilder)
