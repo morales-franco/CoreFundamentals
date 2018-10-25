@@ -7,39 +7,51 @@
     <link href="~/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">OdeToFood</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
         @RenderBody()
-    </div>
-    <footer>
-        @RenderSection("footer", required: false)
-        @*
-        @await Component.InvokeAsync("Greeter")
-        <vc:greeter> reemplaza la linea anterior
-        Para que funcione te agregar un using del proyecto
-        en el _viewImport para que 
-        encuentre el componente
-        *@
-        <vc:greeter></vc:greeter>
 
-        @if (User.Identity.IsAuthenticated)
-        {
+        <footer>
+            @RenderSection("footer", required: false)
+            @*
+            @await Component.InvokeAsync("Greeter")
+            <vc:greeter> reemplaza la linea anterior
+            Para que funcione te agregar un using del proyecto
+            en el _viewImport para que
+            encuentre el componente
+            *@
+            <vc:greeter></vc:greeter>
 
-            @foreach (var identity in User.Identities)
+            @if (User.Identity.IsAuthenticated)
             {
-                <h3>@identity.Name</h3>
-                <ul>
-                    @foreach (var claim in identity.Claims)
-                    {
-                        <li>@claim.Type - @claim.Value</li>
-                    }
-                </ul>
-            }
-        }
-        else
-        {
-            <div>You are anonymous</div>
-        }
 
-    </footer>
+                @foreach (var identity in User.Identities)
+                {
+                    <h3>@identity.Name</h3>
+                    <ul>
+                        @foreach (var claim in identity.Claims)
+                        {
+                            <li>@claim.Type - @claim.Value</li>
+                        }
+                    </ul>
+                }
+            }
+            else
+            {
+                <div>You are anonymous</div>
+            }
+
+        </footer>
+    </div>
+    <script src="~/node_modules/jquery/dist/jquery.js"></script>
+    <script src="~/node_modules/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/node_modules/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 </body>
 </html>
